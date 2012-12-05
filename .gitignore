@@ -1,0 +1,6 @@
+target/**
+bin/**
+doc/**
+gen/**
+local.properties
+.settings
