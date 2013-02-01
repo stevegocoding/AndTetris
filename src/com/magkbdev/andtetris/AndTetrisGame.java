@@ -1,5 +1,13 @@
 package com.magkbdev.andtetris;
 
-public class AndTetrisGame {
+import org.andengine.ui.activity.SimpleBaseGameActivity;
+
+public class AndTetrisGame 
+{
+	
+	public void onCreateResources()
+	{
+		
+	}
 
 }

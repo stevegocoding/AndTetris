@@ -40,8 +40,5 @@ public class TestLauncher extends ExpandableListActivity
 		this.startActivity(new Intent(this, test.CLASS));
 		
 		return super.onChildClick(parent, v, groupIdx, childIdx, id); 
-	}
-	
-	
-
+	} 
 }
