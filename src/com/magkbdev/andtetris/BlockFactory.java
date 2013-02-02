@@ -118,7 +118,7 @@ public class BlockFactory {
 		mBlocksPool = new BlocksPool(maxBlocks); 
 		mBlockRenderersPools = new BlockRenderersPool[numBlockColors]; 
 		for (int i = 0; i < numBlockColors; ++i) {
-			mBlockRenderersPools[i] = new BlockRenderersPool(maxBlocks, textureRegions.get(i), engine);
+			mBlockRenderersPools[i] = new BlockRenderersPool(maxBlocks/2, textureRegions.get(i), engine);
 		} 
 	}
 	
@@ -140,10 +140,22 @@ public class BlockFactory {
 				if (blocks[i] == null)
 					return null; 
 			}
-			else 
-				return null; 
 		}
 		
 		return blocks;
 	}  
+	
+	public TetriminoEntity createTetriminoEntity(final TetriminosShape shape, final int frameGridX, final int frameGridY) {
+		Tetrimino tetri = createTetriminos(shape, frameGridX, frameGridY); 
+		BlockRenderer[] blockRenderers = createTetriBlocksRenderer(tetri); 
+		TetriminoEntity tetriEntity = new TetriminoEntity(tetri, blockRenderers); 
+		
+		return tetriEntity; 
+	}
+	
+	public void recycleTetriBlcoksRenderer(Tetrimino tetri) {
+		for (int i = 0; i < 4; ++i) {
+			
+		}
+	}
 }

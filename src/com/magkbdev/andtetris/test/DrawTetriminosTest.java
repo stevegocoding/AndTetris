@@ -29,8 +29,7 @@ import android.util.SparseArray;
 
 import com.magkbdev.andtetris.Block;
 import com.magkbdev.andtetris.BlockFactory;
-import com.magkbdev.andtetris.BlockRenderer;
-import com.magkbdev.andtetris.Tetrimino;
+import com.magkbdev.andtetris.TetriminoEntity;
 import com.magkbdev.andtetris.TetriminosShape;
 
 public class DrawTetriminosTest extends SimpleBaseGameActivity {
@@ -53,12 +52,9 @@ public class DrawTetriminosTest extends SimpleBaseGameActivity {
 	}
 
 	public void onCreateResources() {
-		int ret = 0; 
-		
-		ret = loadTextures(this, getEngine()); 
-		
+		loadTextures(this, getEngine()); 
 		String xmlFilePath = "config/" + BLOCKS_SHEET;
-		ret = parseTextureRegionsXML(this, xmlFilePath); 
+		parseTextureRegionsXML(this, xmlFilePath); 
 	}
 
 	public Scene onCreateScene() {
@@ -71,17 +67,14 @@ public class DrawTetriminosTest extends SimpleBaseGameActivity {
 		mBlockFactory = new BlockFactory(200, mTexturesMap.get(BLOCKS_SHEET_TEXTURE), mTextureRegions, this.getEngine());
 		
 		// Create a tetrimino and its blocks
+		/*
 		Tetrimino L_tetri = mBlockFactory.createTetriminos(TetriminosShape.L_SHAPE, 10, 10);
 		BlockRenderer[] tetriRenderer = mBlockFactory.createTetriBlocksRenderer(L_tetri);
+		*/ 
+		TetriminoEntity tetriEntity = mBlockFactory.createTetriminoEntity(TetriminosShape.L_SHAPE, 10, 10);
 		
-		// Attach the blocks
-		for (int i = 0; i < 4; ++i) {
-			Block block = tetriRenderer[i].getBlock();
-			float screenX = 50 + block.mFrameGridX * 32;
-			float screenY = 50 + block.mFrameGridY * 32;
-			tetriRenderer[i].setPosition(screenX, screenY);
-			scene.attachChild(tetriRenderer[i]); 
-		}
+		// Attach 
+		scene.attachChild(tetriEntity);
 		
 		return scene;
 	}
