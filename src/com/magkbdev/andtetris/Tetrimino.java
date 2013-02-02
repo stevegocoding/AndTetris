@@ -11,7 +11,7 @@ class Point
 	}
 }
 
-public class Tetriminos {
+public class Tetrimino {
 	private int[][][] mLocalGrid;
 	private Point[][] mLocalBlocksPositions;
 	
@@ -21,7 +21,7 @@ public class Tetriminos {
 	private int mFrameGridX = 0;
 	private int mFrameGridY = 0;
 
-	public Tetriminos(final TetriminosShape shape, final int frameGridX, final int frameGridY) {
+	public Tetrimino(final TetriminosShape shape, final int frameGridX, final int frameGridY) {
 		mShape = shape;
 		mCurrentPosition = 0;
 		mFrameGridX = frameGridX;

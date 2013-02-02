@@ -13,9 +13,7 @@ import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
-import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.util.FPSLogger;
-import org.andengine.opengl.texture.ITexture;
 import org.andengine.opengl.texture.bitmap.BitmapTexture;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.texture.region.TextureRegionFactory;
@@ -31,7 +29,8 @@ import android.util.SparseArray;
 
 import com.magkbdev.andtetris.Block;
 import com.magkbdev.andtetris.BlockFactory;
-import com.magkbdev.andtetris.Tetriminos;
+import com.magkbdev.andtetris.BlockRenderer;
+import com.magkbdev.andtetris.Tetrimino;
 import com.magkbdev.andtetris.TetriminosShape;
 
 public class DrawTetriminosTest extends SimpleBaseGameActivity {
@@ -68,21 +67,20 @@ public class DrawTetriminosTest extends SimpleBaseGameActivity {
 		final Scene scene = new Scene();
 		scene.setBackground(new Background(0.09804f, 0.6274f, 0.8784f));
 		
-		
 		/// Create the block factory 
 		mBlockFactory = new BlockFactory(200, mTexturesMap.get(BLOCKS_SHEET_TEXTURE), mTextureRegions, this.getEngine());
 		
 		// Create a tetrimino and its blocks
-		Tetriminos L_tetri = mBlockFactory.createTetriminos(TetriminosShape.L_SHAPE, 10, 10);
-		Block[] blocks = mBlockFactory.createTeriminosBlocks(L_tetri);
+		Tetrimino L_tetri = mBlockFactory.createTetriminos(TetriminosShape.L_SHAPE, 10, 10);
+		BlockRenderer[] tetriRenderer = mBlockFactory.createTetriBlocksRenderer(L_tetri);
 		
 		// Attach the blocks
 		for (int i = 0; i < 4; ++i) {
-			Sprite sprite = blocks[i].getSprite();
-			float screenX = 50 + blocks[i].mFrameGridX * 32;
-			float screenY = 50 + blocks[i].mFrameGridY * 32;
-			sprite.setPosition(screenX, screenY);
-			scene.attachChild(sprite);
+			Block block = tetriRenderer[i].getBlock();
+			float screenX = 50 + block.mFrameGridX * 32;
+			float screenY = 50 + block.mFrameGridY * 32;
+			tetriRenderer[i].setPosition(screenX, screenY);
+			scene.attachChild(tetriRenderer[i]); 
 		}
 		
 		return scene;

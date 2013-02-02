@@ -1,73 +1,149 @@
 package com.magkbdev.andtetris;
 
 import org.andengine.engine.Engine;
-import org.andengine.entity.sprite.Sprite;
-import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.bitmap.BitmapTexture;
 import org.andengine.opengl.texture.region.ITextureRegion;
 
 import android.util.SparseArray;
 
-public class BlockFactory {
+class BlocksPool {
 	
-	private Block[] mBlocksPool;
-	private int mMaxBlocks; 
-	private int mFreeBlocks;
+	private Block[] mBlocks;
+	private int mNextFree; 
 	
-	private BitmapTexture mTexture;
-	private SparseArray<ITextureRegion> mTextureRegions;
+	public BlocksPool(int maxObjects) {
+		resetPool(maxObjects); 
+	}
 	
+	public void resetPool(int maxObjects) {
+		
+		/// The blocks pool is null, so create it
+		if (mBlocks == null)  {
+			mBlocks = new Block[maxObjects]; 
+			for (int i = 0; i < mBlocks.length; ++i) {
+				mBlocks[i] = new Block(-1, -1); 
+			}
+		} else {
+			for (int i = 0; i < mBlocks.length; ++i) {
+				mBlocks[i].reset(); 
+			}
+		}
+		
+		mNextFree= 0; 
+	} 
+	
+	Block allocateBlock() {
+		// If there is no more free object in the pool
+		if (mNextFree >= (mBlocks.length - 1)) {
+			return null;
+		}
+		else { 
+			Block ret = mBlocks[mNextFree];
+			mNextFree++; 
+			return ret; 
+		}
+	}
+	
+	void recycleBlock(Block block) {
+		if (mNextFree > 0 && block != null) {
+			mNextFree--; 
+			block.reset(); 
+			mBlocks[mNextFree] = block; 
+		}
+	}
+}
+
+class BlockRenderersPool {
+	
+	private BlockRenderer[] mBlockRenderers; 
+	private int mNextFree; 
+	private ITextureRegion mTextureRegion; 
 	private Engine mEngine; 
 	
+	public BlockRenderersPool(int maxObjects, ITextureRegion texRegion, Engine engine) { 
+		mTextureRegion = texRegion; 
+		mEngine = engine; 
+		
+		resetPool(maxObjects);
+	}
+	
+	void resetPool(int maxObjects) { 
+		/// The blocks pool is null, so create it
+		if (mBlockRenderers == null)  {
+			mBlockRenderers = new BlockRenderer[maxObjects]; 
+			for (int i = 0; i < mBlockRenderers.length; ++i) {
+				mBlockRenderers[i] = new BlockRenderer(null, mTextureRegion, mEngine); 
+			}
+		} else {
+			for (int i = 0; i < mBlockRenderers.length; ++i) {
+				mBlockRenderers[i].reset(); 
+			}
+		}		
+		mNextFree= 0; 
+	} 
+	
+	BlockRenderer allocateBlockRenderer(Block block) {
+		// If there is no more free object in the pool
+		if (mNextFree >= (mBlockRenderers.length - 1)) {
+			return null;
+		}
+		else { 
+			BlockRenderer ret = mBlockRenderers[mNextFree];
+			ret.setBlcok(block); 
+			mNextFree++; 
+			return ret; 
+		}
+	}
+}
+
+public class BlockFactory {
+	
+	private BlocksPool mBlocksPool;
+	private BlockRenderersPool[] mBlockRenderersPools; 
+	
+	/*
+	private BitmapTexture mTexture;
+	private SparseArray<ITextureRegion> mTextureRegions; 
+	private Engine mEngine; 
+	*/
+	
 	public BlockFactory(final int maxBlocks, final BitmapTexture texture, final SparseArray<ITextureRegion> textureRegions, Engine engine) {
-		this.mMaxBlocks = maxBlocks; 
+		/*
 		this.mTexture = texture; 
 		this.mTextureRegions = textureRegions;
 		this.mEngine = engine; 
+		*/
 		
-		resetBlocksPool(); 
+		int numBlockColors = textureRegions.size(); 
+		mBlocksPool = new BlocksPool(maxBlocks); 
+		mBlockRenderersPools = new BlockRenderersPool[numBlockColors]; 
+		for (int i = 0; i < numBlockColors; ++i) {
+			mBlockRenderersPools[i] = new BlockRenderersPool(maxBlocks, textureRegions.get(i), engine);
+		} 
 	}
 	
-	public Tetriminos createTetriminos(final TetriminosShape shape, final int frameGridX, final int frameGridY) {
-		Tetriminos tetri = new Tetriminos(shape, frameGridX, frameGridY); 
-		
+	public Tetrimino createTetriminos(final TetriminosShape shape, final int frameGridX, final int frameGridY) {
+		Tetrimino tetri = new Tetrimino(shape, frameGridX, frameGridY);  
 		return tetri;
 	}
 	
-	public Block[] createTeriminosBlocks(Tetriminos tetri) {
-		Block[] blocks = new Block[4];
+	public BlockRenderer[] createTetriBlocksRenderer(Tetrimino tetri) {
+		BlockRenderer[] blocks = new BlockRenderer[4];
 		
 		for (int i = 0; i < 4; ++i) {
-			blocks[i] = mBlocksPool[mFreeBlocks++]; 
-			int frameGridX = tetri.getBlcokFrameGridX(i);
-			int frameGridY = tetri.getBlcokFrameGridY(i); 
-			Sprite sprite = createSprite(tetri.getShape().mBlockSpriteID); 
-			blocks[i].setFrameGridXY(frameGridX, frameGridY); 
-			blocks[i].setSprite(sprite); 
+			int colorID = tetri.getShape().mBlockSpriteID;
+			Block block = mBlocksPool.allocateBlock(); 
+			block.mFrameGridX = tetri.getBlcokFrameGridX(i); 
+			block.mFrameGridY = tetri.getBlcokFrameGridY(i); 
+			if (block != null) {
+				blocks[i] = mBlockRenderersPools[colorID].allocateBlockRenderer(block);
+				if (blocks[i] == null)
+					return null; 
+			}
+			else 
+				return null; 
 		}
 		
 		return blocks;
-	}
-	
-	private Sprite createSprite(int blockID) {
-		ITextureRegion texRegion = mTextureRegions.get(blockID); 
-		Sprite sprite = new Sprite(0.0f, 0.0f, texRegion, mEngine.getVertexBufferObjectManager()); 
-		
-		return sprite;
-	}
-	
-	private void resetBlocksPool() {
-		
-		/// The blocks pool is null, so create it
-		if (mBlocksPool == null)  {
-			mBlocksPool = new Block[mMaxBlocks]; 
-			for (int i = 0; i < mBlocksPool.length; ++i) {
-				mBlocksPool[i] = new Block(-1, -1); 
-			}
-		} else {
-			for (int i = 0; i < mBlocksPool.length; ++i) {
-				mBlocksPool[i].reset(); 
-			}
-		}
-	} 
+	}  
 }
