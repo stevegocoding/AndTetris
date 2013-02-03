@@ -27,8 +27,8 @@ import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.util.SparseArray;
 
-import com.magkbdev.andtetris.Block;
 import com.magkbdev.andtetris.BlockFactory;
+import com.magkbdev.andtetris.GameScene;
 import com.magkbdev.andtetris.TetriminoEntity;
 import com.magkbdev.andtetris.TetriminosShape;
 
@@ -43,6 +43,7 @@ public class DrawTetriminosTest extends SimpleBaseGameActivity {
 	private final String BLOCKS_SHEET = "blocks_sheet.xml"; 
 	
 	private BlockFactory mBlockFactory;
+	private GameScene mGameScene; 
 	
 	public EngineOptions onCreateEngineOptions() {
 		final Camera camera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
@@ -60,8 +61,12 @@ public class DrawTetriminosTest extends SimpleBaseGameActivity {
 	public Scene onCreateScene() {
 		this.mEngine.registerUpdateHandler(new FPSLogger());
 
-		final Scene scene = new Scene();
-		scene.setBackground(new Background(0.09804f, 0.6274f, 0.8784f));
+		// final Scene scene = new Scene();
+		//scene.setBackground(new Background(0.09804f, 0.6274f, 0.8784f));
+		
+		mGameScene = new GameScene(); 
+		mGameScene.setBackground(new Background(0.09804f, 0.6274f, 0.8784f)); 
+		//scene.attachChild(mGameScene); 
 		
 		/// Create the block factory 
 		mBlockFactory = new BlockFactory(200, mTexturesMap.get(BLOCKS_SHEET_TEXTURE), mTextureRegions, this.getEngine());
@@ -71,15 +76,19 @@ public class DrawTetriminosTest extends SimpleBaseGameActivity {
 		Tetrimino L_tetri = mBlockFactory.createTetriminos(TetriminosShape.L_SHAPE, 10, 10);
 		BlockRenderer[] tetriRenderer = mBlockFactory.createTetriBlocksRenderer(L_tetri);
 		*/ 
-		TetriminoEntity tetriEntity = mBlockFactory.createTetriminoEntity(TetriminosShape.L_SHAPE, 10, 10);
+		TetriminoEntity tetriJ = mBlockFactory.createTetriminoEntity(TetriminosShape.J_SHAPE, 2, 0); 
+		TetriminoEntity tetriL = mBlockFactory.createTetriminoEntity(TetriminosShape.L_SHAPE, 5, 3);
+		TetriminoEntity tetriS = mBlockFactory.createTetriminoEntity(TetriminosShape.S_SHAPE, 8, 6); 
 		
 		// Attach 
-		scene.attachChild(tetriEntity);
+		mGameScene.addTetrimino(tetriJ);
+		mGameScene.addTetrimino(tetriL); 
+		mGameScene.addTetrimino(tetriS); 
 		
-		return scene;
+		return mGameScene;
 	}
 
-	private String[] mFileNames;
+	private String[] mFileNames; 
 	private String[] mFolderNames = new String[] { new String("gfx") };
 
 	private int loadTextures(Context context, Engine engine) {
@@ -89,7 +98,7 @@ public class DrawTetriminosTest extends SimpleBaseGameActivity {
 		for (int i = 0; i < mFolderNames.length; ++i) {
 			try {
 				mFileNames = context.getResources().getAssets().list(mFolderNames[i]);
-				Arrays.sort(mFileNames);
+				Arrays.sort(mFileNames); 
 				for (int j = 0; j < mFileNames.length; ++j) {
 					final String resPath = mFolderNames[i] + "/" + mFileNames[j];
 					/*
@@ -167,7 +176,6 @@ public class DrawTetriminosTest extends SimpleBaseGameActivity {
 				}
 				eventType = xpp.next();
 			}
-			
 		} catch (IOException e) {
 			e.printStackTrace();
 			return 1;

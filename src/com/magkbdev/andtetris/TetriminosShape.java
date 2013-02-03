@@ -55,7 +55,7 @@ public enum TetriminosShape {
 			for (int i = 0; i < mGridDimension; ++i)
 				mGrid[i] = g0[i].clone(); 
 			break;
-			
+			/*
 		case 1:
 			int[][] g1= {
 					{1, 1, 1},
@@ -72,6 +72,24 @@ public enum TetriminosShape {
 			for (int i = 0; i < mGridDimension; ++i)
 				mGrid[i] = g2[i].clone(); 
 			break;
+			*/
+		case 1:
+			int[][] g1= {
+					{0, 0, 0},
+					{1, 1, 1},
+					{0, 0, 1}};
+			for (int i = 0; i < mGridDimension; ++i)
+				mGrid[i] = g1[i].clone(); 
+			break; 
+		case 2:
+			int[][] g2 = {
+					{0, 0, 0},
+					{1, 1, 1},
+					{1, 0, 0}};
+			for (int i = 0; i < mGridDimension; ++i)
+				mGrid[i] = g2[i].clone(); 
+			break;
+			
 		case 3:
 			int[][] g3 = {
 					{0, 1, 1},

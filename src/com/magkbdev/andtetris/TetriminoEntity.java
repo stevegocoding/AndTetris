@@ -1,6 +1,7 @@
 package com.magkbdev.andtetris;
 
 import org.andengine.entity.Entity;
+import org.andengine.input.touch.TouchEvent;
 
 public class TetriminoEntity extends Entity {
 	
@@ -15,8 +16,7 @@ public class TetriminoEntity extends Entity {
 			for (int i = 0; i < blockRenderers.length; ++i) { 
 				attachChild(blockRenderers[i]); 
 			}
-		}
-		
+		} 
 		updatePosition(); 
 	}
 	
@@ -24,12 +24,27 @@ public class TetriminoEntity extends Entity {
 		float blockTextureWidth = mBlockRenderers[0].getTextureRegion().getWidth(); 
 		float blockTextureHeight = mBlockRenderers[0].getTextureRegion().getHeight(); 
 		
-		for (int i = 0; i < 4; ++i) {
-			Block block = mBlockRenderers[i].getBlock();
-			float screenX = this.mX + block.mFrameGridX * blockTextureWidth;
-			float screenY = this.mX + block.mFrameGridY * blockTextureHeight;
+		for (int i = 0; i < 4; ++i) { 
+			int frameGridX = mTetrimino.getBlcokFrameGridX(i);
+			int frameGridY = mTetrimino.getBlcokFrameGridY(i); 
+			float screenX = this.mX + (frameGridX-1) * blockTextureWidth ;
+			float screenY = this.mX + (frameGridY-1) * blockTextureHeight;
 			mBlockRenderers[i].setPosition(screenX, screenY); 
 		}
 	}
-
+	
+	public void rotate_cw() {
+		mTetrimino.rotate_cw(); 
+		updatePosition(); 
+	} 
+	
+	public void rotate_ccw() {
+		mTetrimino.rotate_cw(); 
+		updatePosition(); 
+	}
+	
+	public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+		
+		return true;
+	}
 }
