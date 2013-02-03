@@ -35,8 +35,8 @@ public class Tetrimino {
 	}
 
 	public void rotate_cw() { 
-		mCurrentPosition = (mCurrentPosition - 1) % mShape.mNumPositions;
-		Log.d("Tetrimino", "rotate() mCurrentPosition - " + mCurrentPosition);
+		mCurrentPosition = (mCurrentPosition == 0) ? (mShape.mNumPositions - 1) : (mCurrentPosition - 1);
+		// Log.d("Tetrimino", "rotate() mCurrentPosition - " + mCurrentPosition);
 	}
 	
 	public void rotate_ccw() {

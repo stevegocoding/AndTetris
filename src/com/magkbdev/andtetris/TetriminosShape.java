@@ -115,9 +115,9 @@ public enum TetriminosShape {
 			break;
 		case 6: 
 			int[][] g6 = {
+					{0, 0, 0},
 					{1, 1, 1},
-					{0, 1, 0},
-					{0, 0, 0}};
+					{0, 1, 0}};
 			for (int i = 0; i < mGridDimension; ++i)
 				mGrid[i] = g6[i].clone(); 
 			break; 

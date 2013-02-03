@@ -76,14 +76,22 @@ public class DrawTetriminosTest extends SimpleBaseGameActivity {
 		Tetrimino L_tetri = mBlockFactory.createTetriminos(TetriminosShape.L_SHAPE, 10, 10);
 		BlockRenderer[] tetriRenderer = mBlockFactory.createTetriBlocksRenderer(L_tetri);
 		*/ 
-		TetriminoEntity tetriJ = mBlockFactory.createTetriminoEntity(TetriminosShape.J_SHAPE, 2, 0); 
-		TetriminoEntity tetriL = mBlockFactory.createTetriminoEntity(TetriminosShape.L_SHAPE, 5, 3);
-		TetriminoEntity tetriS = mBlockFactory.createTetriminoEntity(TetriminosShape.S_SHAPE, 8, 6); 
+		TetriminoEntity tetriJ = mBlockFactory.createTetriminoEntity(TetriminosShape.J_SHAPE, 3, 3); 
+		TetriminoEntity tetriL = mBlockFactory.createTetriminoEntity(TetriminosShape.L_SHAPE, 6, 3);
+		TetriminoEntity tetriS = mBlockFactory.createTetriminoEntity(TetriminosShape.S_SHAPE, 9, 6); 
+		TetriminoEntity tetriZ = mBlockFactory.createTetriminoEntity(TetriminosShape.Z_SHAPE, 3, 6); 
+		TetriminoEntity tetriT = mBlockFactory.createTetriminoEntity(TetriminosShape.T_SAHPE, 6, 9);
+		TetriminoEntity tetriO = mBlockFactory.createTetriminoEntity(TetriminosShape.O_SHAPE, 9, 3);
+		TetriminoEntity tetriI = mBlockFactory.createTetriminoEntity(TetriminosShape.I_SHAPE, 10, 10);
 		
 		// Attach 
 		mGameScene.addTetrimino(tetriJ);
 		mGameScene.addTetrimino(tetriL); 
 		mGameScene.addTetrimino(tetriS); 
+		mGameScene.addTetrimino(tetriZ);
+		mGameScene.addTetrimino(tetriT);
+		mGameScene.addTetrimino(tetriO);
+		mGameScene.addTetrimino(tetriI); 
 		
 		return mGameScene;
 	}

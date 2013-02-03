@@ -39,7 +39,7 @@ public class TetriminoEntity extends Entity {
 	} 
 	
 	public void rotate_ccw() {
-		mTetrimino.rotate_cw(); 
+		mTetrimino.rotate_ccw(); 
 		updatePosition(); 
 	}
 	
