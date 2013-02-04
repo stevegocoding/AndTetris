@@ -5,7 +5,7 @@ import com.magkbdev.andtetris.R;
 public enum TestGroup 
 {
 
-	GRAPHICS(R.string.testgroup_graphics, Test.DRAW_TETRIMINOS); 
+	GRAPHICS(R.string.testgroup_graphics, Test.DRAW_TETRIMINOS, Test.DRAW_FRAMEGRID); 
 	
 	public final Test[] mTests; 
 	public final int mResID; 

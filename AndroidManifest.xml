@@ -23,6 +23,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".test.DrawTetriminosTest"></activity>
+        <activity android:name=".test.DrawFrameGridTest"></activity>
     </application>
 
 </manifest>

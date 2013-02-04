@@ -6,5 +6,6 @@
     <string name="menu_settings">Settings</string>
     <string name="draw_tetriminos_test">Drawing Tetriminos</string>
     <string name="testgroup_graphics">Graphics</string>
+    <string name="draw_framegrid_test">Drawing Grid</string>
 
 </resources>
